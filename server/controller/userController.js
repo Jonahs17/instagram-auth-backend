@@ -31,14 +31,16 @@ exports.signup=async (req,res)=>{
 exports.login=async (req,res)=>{
     const {email,password}=req.body;
     try{
+        
         const user=await userModel.findOne({email}).select("+password");
 
-        const token = user.jwtToken();
+        const token = await user.jwtToken();
         user.password=undefined;
 
         cookieOptions={
             maxAge:24*60*60*1000,
-            httpOnly:true
+            httpOnly:true,
+            sameSite: 'none'
         };
 
         res.cookie("token",token,cookieOptions);
@@ -47,6 +49,9 @@ exports.login=async (req,res)=>{
             success:true,
             data:user
         }); 
+
+        const token1= (req.cookies && req.cookies.token);
+        console.log(token1);
 
     }
     catch(e){
@@ -58,20 +63,17 @@ exports.login=async (req,res)=>{
 };
 
 exports.getUser=async (req,res)=>{
-    const userId=req.user.id;
-        
+    const {id,email} = req.user;
+
     try{
-        const user= await userModel.findById(userId);
-        return res.status(200).json({
-            success:true,
-            user
-        });
-        
+        const userData = await userModel.findOne({email});
+        res.status(200).send({
+            msg:"Success",
+            data:userData
+        })
+
     }
-    catch(e){
-        res.status(400).json({
-            success:false,
-            data:e.message
-        }); 
+    catch(err){
+        res.status(501).send({msg:err.message})
     }
 }
