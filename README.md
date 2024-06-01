@@ -23,9 +23,3 @@ npm run start
 * Github: [@Jonahs17](https://github.com/Jonahs17)
 * LinkedIn: [@jonahs-george-93a137263](https://linkedin.com/in/jonahs-george-93a137263)
 
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
